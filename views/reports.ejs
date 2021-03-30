@@ -1,0 +1,21 @@
+<html>
+<head>
+    <% include ./partial/head.ejs%>
+    <script src="/javascripts/reports.js"></script>
+</head>
+<body>
+<% include ./partial/navbar.ejs%>
+<main>
+    <div class="container">
+        <script type="text/javascript">
+			const queries = parseQueries();
+			const page = queries.page ?? 1;
+			document.writeln(`<h2>현재 ${page}페이지를 보고 있습니다.</h2>`);
+        </script>
+        <span id="cards">
+    </span>
+    </div>
+</main>
+<% include ./partial/footer.ejs %>
+</body>
+</html>

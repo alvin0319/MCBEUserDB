@@ -1,0 +1,3 @@
+node_modules/
+# Log file isn't need
+web.log

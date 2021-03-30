@@ -1,0 +1,65 @@
+<html>
+<head>
+    <% include ./partial/head.ejs %>
+</head>
+<body>
+<% include ./partial/navbar.ejs %>
+<main>
+    <div class="container">
+        <form id="form">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="title" type="text" class="validate">
+                    <label class="active" for="title">제목</label>
+                </div>
+            </div>
+            <p>
+                <label>
+                    <input id="report_type" type="radio" checked value="0"/>
+                    <span>핵</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input id="report_type" type="radio" value="1"/>
+                    <span>테러</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input id="report_type" type="radio" value="2"/>
+                    <span>불건전한 언어 사용</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input id="report_type" type="radio" value="3"/>
+                    <span>비매너 플레이</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input id="report_type" type="radio" value="4"/>
+                    <span>기타</span>
+                </label>
+            </p>
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="reason" class="materialize-textarea"></textarea>
+                            <label for="textarea1">상황 설명과 이유 (사진은 imgur 사이트를 이용해 링크로 달아주세요)</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="input-field col s12">
+                <span id="result" style="color: red"></span>
+            </div>
+        </form>
+    </div>
+</main>
+<% include ./partial/footer.ejs %>
+<script src="/javascripts/report.js"></script>
+</body>
+</html>
