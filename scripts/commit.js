@@ -14,7 +14,7 @@ const rl = readline.createInterface({
 (async () => {
 	const data = JSON.parse(fs.readFileSync("config.json").toString());
 
-	const originalData = data;
+	const [host, user, password, database, port] = [data.host, data.user, data.password, data.database, data.port];
 
 	data.host = "";
 	data.user = "";
@@ -35,7 +35,13 @@ const rl = readline.createInterface({
 			console.log(a, b);
 			child_process.exec("git push origin master", (err, a, b) => {
 				console.log(a, b);
-				fs.writeFileSync(path.resolve("config.json"), JSON.stringify(originalData, null, 2));
+				fs.writeFileSync(path.resolve("config.json"), JSON.stringify({
+					host: host,
+					user: user,
+					password: password,
+					database: database,
+					port: port
+				}, null, 2));
 
 				console.log("Done");
 				process.exit(0);
