@@ -23,7 +23,6 @@ const rl = readline.createInterface({
 
 	fs.writeFileSync("config.json", JSON.stringify(data, null, 2));
 
-	//await child_process.exec("cd ..");
 	child_process.exec("git add .", async (err, a, b) => {
 		console.log(a, b);
 		console.log("Commit message: ");
