@@ -25,6 +25,7 @@ const rl = readline.createInterface({
 
 	//await child_process.exec("cd ..");
 	child_process.exec("git add .", async (err, a, b) => {
+		console.log(a, b);
 		console.log("Commit message: ");
 
 		const l = rl[Symbol.asyncIterator]();
