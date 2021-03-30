@@ -55,7 +55,7 @@ router.post("/report", (req, res, next) => {
 					message: "Invalid body received"
 				});
 			}
-			database.createArticle(title, type, reason)
+			database.createArticle(author, title, type, reason)
 				.then((articleId) => {
 					res.json({
 						status: 200,
