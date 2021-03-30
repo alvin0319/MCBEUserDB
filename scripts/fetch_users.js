@@ -1,8 +1,8 @@
 const mysql = require("mysql-await");
-
+const fs = require("fs");
 
 (async () => {
-	const connection = mysql.createConnection(require("../config.json"));
+	const connection = mysql.createConnection(JSON.parse(fs.readFileSync("/config.json").toString()));
 
 	const res = await connection.awaitQuery("SELECT * FROM `users` where `id` = 'alvin0319'");
 
