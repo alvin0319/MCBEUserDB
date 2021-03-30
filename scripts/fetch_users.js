@@ -2,7 +2,7 @@ const mysql = require("mysql-await");
 
 
 (async () => {
-	const connection = mysql.createConnection(require("./config.json"));
+	const connection = mysql.createConnection(require("../config.json"));
 
 	const res = await connection.awaitQuery("SELECT * FROM `users` where `id` = 'alvin0319'");
 

@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "delete_articles": "node delete_articles.js",
-    "delete_users": "node delete_users.js"
+    "delete_articles": "node scripts/delete_articles.js",
+    "delete_users": "node scripts/delete_users.js",
+    "fetch_users": "node scripts/fetch_users.js",
+    "push": "node scripts/commit.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
