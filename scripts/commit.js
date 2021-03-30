@@ -21,7 +21,7 @@ const rl = readline.createInterface({
 	data.password = "";
 	data.database = "";
 
-	fs.writeFileSync("config.json", JSON.stringify(data));
+	fs.writeFileSync("config.json", JSON.stringify(data, null, 2));
 
 	//await child_process.exec("cd ..");
 	child_process.exec("git add .", async (err, a, b) => {
@@ -36,7 +36,7 @@ const rl = readline.createInterface({
 			console.log(a, b);
 			child_process.exec("git push origin master", (err, a, b) => {
 				console.log(a, b);
-				fs.writeFileSync(path.resolve("config.json"), JSON.stringify(originalData));
+				fs.writeFileSync(path.resolve("config.json"), JSON.stringify(originalData, null, 2));
 
 				console.log("Done");
 				process.exit(0);
