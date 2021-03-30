@@ -19,14 +19,13 @@ function addCard(id, text, author, url = ""){
 													html: `#${id}, 제보자: ${author}`
 												})
 											)
-											.append($("<p>", {
-											})
+											.append($("<p>", {})
 												.text(text))
 									)
 									.append($("<div>", {
 											class: "card-action"
 										})
-										.append(`<a href="/report?id=${id}">제보 보러가기</a>`)
+											.append(`<a href="/report?id=${id}">제보 보러가기</a>`)
 									)
 							)
 					)
