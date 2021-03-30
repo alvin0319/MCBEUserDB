@@ -1,4 +1,4 @@
-const {createWriteStream, createReadStream, existsSync} = require("fs");
+const {createWriteStream} = require("fs");
 const fs = require("fs");
 
 class Logger{
