@@ -3,3 +3,6 @@ node_modules/
 web.log
 
 config.json
+
+# WebStorm files
+.idea

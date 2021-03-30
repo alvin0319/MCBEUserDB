@@ -2,6 +2,6 @@
   "host": "",
   "user": "",
   "password": "",
-  "database": "",
+  "database": "a",
   "port": 3306
 }
