@@ -1,4 +1,4 @@
-function addCard(id, text, url = ""){
+function addCard(id, text, author, url = ""){
 	if(url !== ""){
 	}else{
 		$("#cards")
@@ -16,7 +16,7 @@ function addCard(id, text, url = ""){
 										})
 											.append($("<span>", {
 													class: "card-title",
-													html: `#${id}`
+													html: `#${id}, 제보자: ${author}`
 												})
 											)
 											.append($("<p>", {
@@ -45,11 +45,13 @@ $(document).ready(function(){
 				const result = data.result;
 				//console.log(result);
 				for(const report of result){
-					addCard(report.id, report.reason, '');
+					addCard(report.id, report.reason, report.author, '');
 				}
 				break;
 			case 500:
-
+			default:
+				alert("Internal server error");
+				break;
 		}
 	}
 	xhr.open("GET", `/api/v1/reports?page=${page}`);

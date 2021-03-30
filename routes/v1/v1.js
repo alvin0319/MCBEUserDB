@@ -31,35 +31,52 @@ router.post("/report", (req, res, next) => {
 	const title = body.title;
 	const reason = body.reason;
 	const type = body.type;
+	const author = body.author;
 
-	if(type < 0 || type > 4){
+	if(!author){
 		return res.json({
 			status: 401,
-			message: "type must be range 0~4"
+			message: "Bad access"
 		});
 	}
 
-	if(!title || !reason){
-		return res.json({
-			status: 401,
-			message: "Invalid body received"
-		});
-	}
-	database.createArticle(title, type, reason)
-		.then((articleId) => {
-			res.json({
-				status: 200,
-				result: {
-					articleId: articleId
-				}
+	database.fetchUser(author)
+		.then((result) => {
+			if(type < 0 || type > 4){
+				return res.json({
+					status: 401,
+					message: "type must be range 0~4"
+				});
+			}
+
+			if(!title || !reason){
+				return res.json({
+					status: 401,
+					message: "Invalid body received"
+				});
+			}
+			database.createArticle(title, type, reason)
+				.then((articleId) => {
+					res.json({
+						status: 200,
+						result: {
+							articleId: articleId
+						}
+					});
+				}).catch((e) => {
+				console.error(e);
+				res.json({
+					status: 401,
+					message: "Internal server error"
+				});
 			});
-		}).catch((e) => {
-		console.error(e);
-		res.json({
-			status: 401,
-			message: "Internal server error"
+		})
+		.catch((e) => {
+			return res.json({
+				status: 401,
+				message: "User not found"
+			});
 		});
-	});
 });
 
 router.get("/reports", async (req, res, next) => {

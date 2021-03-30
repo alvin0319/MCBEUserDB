@@ -12,7 +12,7 @@ class Database{
 	constructor(){
 		this.connection = mysql.createConnection(require(dir + "config.json"));
 		this.connection.awaitQuery("CREATE TABLE IF NOT EXISTS `users` (`id` VARCHAR(20) NOT NULL PRIMARY KEY, `mail` TEXT NOT NULL, `password` TEXT NOT NULL)");
-		this.connection.awaitQuery("CREATE TABLE IF NOT EXISTS `articles` (`id` INT NOT NULL PRIMARY KEY, `title` VARCHAR(15) NOT NULL, `type` INT NOT NULL, `reason` TEXT NOT NULL)");
+		this.connection.awaitQuery("CREATE TABLE IF NOT EXISTS `articles` (`id` INT NOT NULL PRIMARY KEY, `title` VARCHAR(15) NOT NULL, `type` INT NOT NULL, `reason` TEXT NOT NULL, `author` VARCHAR(20) NOT NULL)");
 
 		this.id = JSON.parse(readFileSync(dir + "article.json").toString("utf-8")).id ?? 0;
 	}
@@ -71,10 +71,10 @@ class Database{
 		};
 	}
 
-	async createArticle(title, type, reason){
-		[title, type, reason] = [title, type, reason].map((k) => escape(k));
+	async createArticle(author, title, type, reason){
+		[title, type, reason, author] = [title, type, reason, author].map((k) => escape(k));
 		this.id += 1;
-		await this.connection.awaitQuery(`INSERT INTO \`articles\` (\`id\`, \`title\`, \`type\`, \`reason\`) VALUES (${this.id}, ${title}, ${type}, ${reason})`);
+		await this.connection.awaitQuery(`INSERT INTO \`articles\` (\`id\`, \`title\`, \`type\`, \`reason\`, \`author\`) VALUES (${this.id}, ${title}, ${type}, ${reason}, ${author})`);
 		await logger.debug(`Creating article ${this.id}`);
 		return this.id;
 	}
@@ -87,10 +87,16 @@ class Database{
 				id: article.id,
 				title: article.title,
 				type: article.type,
-				reason: article.reason
+				reason: article.reason,
+				author: article.author
 			});
 		}
 		return result;
+	}
+
+	async fetchArticlesByAuthor(author){
+		const res = await this.fetchArticles();
+		return res.filter((article) => article.author === author);
 	}
 }
 
