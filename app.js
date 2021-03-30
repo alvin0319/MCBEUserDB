@@ -53,7 +53,7 @@ app.use(async (req, res, next) => {
 		req.socket.remoteAddress ||
 		(req.connection.socket ? req.connection.socket.remoteAddress : null);
 	const url = req.url;
-	await Logger.debug(`${ip} : ${url} (${req.statusCode})`);
+	await Logger.debug(`${ip} (${url} ${res.statusCode})`);
 	next();
 });
 
