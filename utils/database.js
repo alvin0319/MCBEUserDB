@@ -67,7 +67,8 @@ class Database{
 			id: res[0].id,
 			title: res[0].title,
 			type: res[0].type,
-			reason: res[0].reason
+			reason: res[0].reason,
+			author: res[0].author
 		};
 	}
 

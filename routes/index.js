@@ -10,6 +10,9 @@ router.get("/", function(req, res, next){
 });
 
 router.get("/login", (req, res, next) => {
+	if(typeof req.session.userId !== "undefined"){
+		return res.redirect("/");
+	}
 	res.render("login", {
 		isAuthenticated: typeof req.session.userId !== "undefined",
 		err: ""
@@ -17,10 +20,6 @@ router.get("/login", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-	if(req.session.userId){
-		return res.redirect("/");
-	}
-
 	const body = req.body;
 
 	database.fetchUser(body.username)
@@ -29,10 +28,17 @@ router.post("/login", (req, res, next) => {
 
 			bcrypt.hash(body.password, saltRounds)
 				.then((hash) => {
-					if(data.password === hash){
-						req.session.userId = body.username;
-						return res.redirect("/");
-					}
+					bcrypt.compare(body.password, hash, (err, result) => {
+						if(result){
+							req.session.userId = body.username;
+							return res.redirect("/");
+						}
+						res.render("login", {
+							err: "아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."
+						});
+					});
+				})
+				.catch((e) => {
 					res.render("login", {
 						err: "아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다."
 					});
@@ -56,7 +62,7 @@ router.get("/logout", (req, res, next) => {
 });
 
 router.get("/register", (req, res, next) => {
-	if(req.session.userId){
+	if(typeof req.session.userId !== "undefined"){
 		return res.redirect("/");
 	}
 	res.render("register", {
@@ -65,6 +71,9 @@ router.get("/register", (req, res, next) => {
 });
 
 router.post("/register", (req, res, next) => {
+	if(typeof req.session.userId !== "undefined"){
+		return res.redirect("/");
+	}
 	const body = req.body;
 
 	console.log(body);
@@ -72,6 +81,13 @@ router.post("/register", (req, res, next) => {
 	const id = body.username;
 	const mail = body.mail;
 	const password = body.password;
+
+
+	if(id.trim() === "" || mail.trim() === "" || password.trim() === ""){
+		return res.render("register", {
+			err: "모든 칸을 작성해주세요."
+		})
+	}
 
 	database.fetchUser(id)
 		.then((a_) => res.render("register", {
@@ -98,7 +114,46 @@ router.post("/register", (req, res, next) => {
 });
 
 router.get("/reports", (req, res, next) => {
-	res.render("reports");
+	res.render("reports", {
+		isAuthenticated: typeof req.session.userId !== "undefined",
+	});
+});
+
+router.get("/doreport", (req, res, next) => {
+	if(typeof req.session.userId === "undefined"){
+		return res.redirect("/");
+	}
+	res.render("article", {
+		isAuthenticated: typeof req.session.userId !== "undefined"
+	});
+});
+
+router.post("/postarticle", (req, res, next) => {
+	if(typeof req.session.userId === "undefined"){
+		return res.redirect("/");
+	}
+	const body = req.body;
+
+	const title = body.title;
+	const report_type = body.report_type;
+	const reason = body.reason;
+
+	database.createArticle(req.session.userId, title, report_type, reason)
+		.then((articleId) => {
+			res.redirect(`/report?id=${articleId}`);
+		})
+		.catch((e) => {
+			res.render("article", {
+				isAuthenticated: typeof req.session.userId !== "undefined",
+				err: e.message
+			});
+		});
+});
+
+router.get("/report", (req, res, next) => {
+	res.render("report", {
+		isAuthenticated: typeof req.session.userId !== "undefined"
+	})
 });
 
 module.exports = router;
